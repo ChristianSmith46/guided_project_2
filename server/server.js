@@ -11,10 +11,6 @@ const port = 3000;
 const app = express();
 app.use(cors());
 
-app.get('/', async (req, res) => {
-    res.send('Hello World');
-});
-
 app.get('/api/characters', async (req, res) => {
     try {
         await client.connect();
@@ -273,8 +269,20 @@ app.get('/api/planets/:id/films', async (req, res) => {
 
 app.get('/api/planets/:id/characters', async (req, res) => {
     const id = parseInt(req.params.id);
-    res.send('Not Complete');
+    try {
+        await client.connect();
+        const db = client.db(dbName);
+        const collection = db.collection('characters');
+        const character = await collection.find({ homeworld: id }).toArray();
+        if (!character) res.json({ error: "No Characters found" })
+        else res.json(character);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Server error" });
+    }
 });
+
+app.use(express.static('./public'));
 
 
 
