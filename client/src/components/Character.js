@@ -18,9 +18,6 @@ export function Character() {
         <>
             <div>
                 <h1>Star Wars Universe Lookup</h1>
-                <label>Who you looking for? <span className="small">(Regular expressions are cool
-                    here)</span></label>
-                <input id="searchString" />
             </div>
             <section id="charactersList">
                 {characters.map((character) => (
