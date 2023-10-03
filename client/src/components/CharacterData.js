@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function CharacterData() {
     const [charData, setCharData] = useState({});
     const [planetData, setPlanetData] = useState({});
     const [films, setFilms] = useState([]);
+    const navigate = useNavigate();
     const { id } = useParams();
 
     useEffect(() => {
@@ -13,11 +14,6 @@ export function CharacterData() {
             const char = await data.json();
             setCharData(char);
         }
-        async function getPlanets() {
-            const data = await fetch(`http://localhost:3000/api/characters/${id}/planets`);
-            const planets = await data.json();
-            setPlanetData(planets);
-        }
         async function getFilms() {
             const data = await fetch(`http://localhost:3000/api/characters/${id}/films`);
             const films = await data.json();
@@ -25,7 +21,7 @@ export function CharacterData() {
         }
         getCharData();
         getFilms();
-    }, []);
+    }, [id]);
 
     useEffect(() => {
         async function getWorld(worldId) {
@@ -50,12 +46,12 @@ export function CharacterData() {
             </section>
             <section id="planets">
                 <h2>Homeworld</h2>
-                <p>{planetData.name}</p>
+                <p onClick={() => navigate(`/planet/${planetData.id}`)}>{planetData.name}</p>
             </section>
             <section id="films">
                 <h2>Films appeared in</h2>
                 <ul>{films.map((film) => (
-                    <li key={film.id}>
+                    <li key={film.id} onClick={() => navigate(`/film/${film.id}`)}>
                         {film.title}
                     </li>
                 ))
