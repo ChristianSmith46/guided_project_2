@@ -1,5 +1,6 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
+const cors = require('cors');
 
 const url = 'mongodb://localhost:27017';
 const client = new MongoClient(url);
@@ -8,6 +9,7 @@ const dbName = 'swapi';
 const port = 3000;
 
 const app = express();
+app.use(cors());
 
 app.get('/', async (req, res) => {
     res.send('Hello World');
