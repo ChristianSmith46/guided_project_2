@@ -1,6 +1,7 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
+const path = require('path');
 
 const url = 'mongodb://localhost:27017';
 const client = new MongoClient(url);
@@ -283,6 +284,9 @@ app.get('/api/planets/:id/characters', async (req, res) => {
 });
 
 app.use(express.static('./public'));
+app.get('*', function (req, res) {
+    res.sendFile('index.html', { root: path.join(__dirname, './public') });
+});
 
 
 
